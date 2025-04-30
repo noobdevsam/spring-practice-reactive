@@ -1,6 +1,8 @@
 package com.example.springpracticereactive.domain;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -14,7 +16,11 @@ public record Beer(
 	String upc,
 	Integer quantityOnHand,
 	BigDecimal price,
+
+	@CreatedDate
 	LocalDateTime createdDate,
+
+	@LastModifiedDate
 	LocalDateTime lastModifiedDate
 ) {
 	public Beer(
@@ -24,6 +30,6 @@ public record Beer(
 		Integer quantityOnHand,
 		BigDecimal price
 	) {
-		this(null, beerName, beerStyle, upc, quantityOnHand, price, LocalDateTime.now(), LocalDateTime.now());
+		this(null, beerName, beerStyle, upc, quantityOnHand, price, null, null);
 	}
 }
