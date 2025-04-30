@@ -17,4 +17,13 @@ public record Beer(
 	LocalDateTime createdDate,
 	LocalDateTime lastModifiedDate
 ) {
+	public Beer(
+		String beerName,
+		String beerStyle,
+		String upc,
+		Integer quantityOnHand,
+		BigDecimal price
+	) {
+		this(null, beerName, beerStyle, upc, quantityOnHand, price, LocalDateTime.now(), LocalDateTime.now());
+	}
 }
