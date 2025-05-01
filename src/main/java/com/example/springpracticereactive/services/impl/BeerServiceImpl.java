@@ -30,4 +30,15 @@ public class BeerServiceImpl implements BeerService {
 		return beerRepository.findById(id)
 			       .map(beerMapper::beerToBeerDTO);
 	}
+
+	@Override
+	public Mono<BeerDTO> saveNewBeer(BeerDTO beerDTO) {
+
+		// It first maps this BeerDTO to a Beer entity using the beerDTOToBeer method from the BeerMapper
+
+		// After the entity is saved, the resulting Mono<Beer> is transformed back into a Mono<BeerDTO>
+		// using the beerToBeerDTO method from the BeerMapper
+		return beerRepository.save(beerMapper.beerDTOToBeer(beerDTO))
+			       .map(beerMapper::beerToBeerDTO);
+	}
 }
