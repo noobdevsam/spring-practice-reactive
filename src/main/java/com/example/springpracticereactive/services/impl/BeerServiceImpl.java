@@ -6,6 +6,7 @@ import com.example.springpracticereactive.repositories.BeerRepository;
 import com.example.springpracticereactive.services.BeerService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class BeerServiceImpl implements BeerService {
@@ -21,6 +22,12 @@ public class BeerServiceImpl implements BeerService {
 	@Override
 	public Flux<BeerDTO> listBeers() {
 		return beerRepository.findAll()
+			       .map(beerMapper::beerToBeerDTO);
+	}
+
+	@Override
+	public Mono<BeerDTO> getBeerById(Integer id) {
+		return beerRepository.findById(id)
 			       .map(beerMapper::beerToBeerDTO);
 	}
 }
