@@ -15,5 +15,7 @@ public interface BeerService {
 	Mono<BeerDTO> updateBeer(Integer id, BeerDTO beerDTO);
 	
 	Mono<BeerDTO> patchBeer(Integer id, BeerDTO beerDTO);
+	
+	Mono<Void> deleteBeerById(Integer id);
 
 }

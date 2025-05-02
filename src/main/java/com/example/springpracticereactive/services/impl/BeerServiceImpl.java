@@ -100,6 +100,10 @@ public class BeerServiceImpl implements BeerService {
 		// Since records don't support setter methods, we use the ternary operator pattern to only update fields when
 		// the DTO provides non-null values.
 	}
-
-
+	
+	@Override
+	public Mono<Void> deleteBeerById(Integer id) {
+		return beerRepository.deleteById(id);
+	}
+	
 }
