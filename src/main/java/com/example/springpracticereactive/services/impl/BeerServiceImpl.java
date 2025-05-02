@@ -78,6 +78,28 @@ public class BeerServiceImpl implements BeerService {
 		 * before returning it to the caller.
 		 * */
 	}
+	
+	@Override
+	public Mono<BeerDTO> patchBeer(Integer id, BeerDTO beerDTO) {
+		return beerRepository.findById(id)
+			       .flatMap(foundBeer -> {
+				       // Create a new Beer with conditionally updated fields
+				       return beerRepository.save(new Beer(
+					       foundBeer.id(),
+					       beerDTO.beerName() != null ? beerDTO.beerName() : foundBeer.beerName(),
+					       beerDTO.beerStyle() != null ? beerDTO.beerStyle() : foundBeer.beerStyle(),
+					       beerDTO.upc() != null ? beerDTO.upc() : foundBeer.upc(),
+					       beerDTO.quantityOnHand() != null ? Integer.valueOf(beerDTO.quantityOnHand()) : foundBeer.quantityOnHand(),
+					       beerDTO.price() != null ? beerDTO.price() : foundBeer.price(),
+					       foundBeer.createdDate(),
+					       foundBeer.lastModifiedDate())
+				       );
+			       })
+			       .map(beerMapper::beerToBeerDTO);
+		
+		// Since records don't support setter methods, we use the ternary operator pattern to only update fields when
+		// the DTO provides non-null values.
+	}
 
 
 }
