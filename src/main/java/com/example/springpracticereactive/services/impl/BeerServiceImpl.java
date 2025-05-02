@@ -1,5 +1,6 @@
 package com.example.springpracticereactive.services.impl;
 
+import com.example.springpracticereactive.domain.Beer;
 import com.example.springpracticereactive.mappers.BeerMapper;
 import com.example.springpracticereactive.model.BeerDTO;
 import com.example.springpracticereactive.repositories.BeerRepository;
@@ -41,4 +42,42 @@ public class BeerServiceImpl implements BeerService {
 		return beerRepository.save(beerMapper.beerDTOToBeer(beerDTO))
 			       .map(beerMapper::beerToBeerDTO);
 	}
+
+	@Override
+	public Mono<BeerDTO> updateBeer(Integer id, BeerDTO beerDTO) {
+		return beerRepository.findById(id).flatMap(
+			foundBeer -> {
+				// Create a new Beer instance with updated fields but preserve the ID and timestamps
+				return beerRepository.save(
+					new Beer(
+						foundBeer.id(),
+						beerDTO.beerName(),
+						beerDTO.beerStyle(),
+						beerDTO.upc(),
+						beerDTO.quantityOnHand() != null ? Integer.valueOf(beerDTO.quantityOnHand()) : foundBeer.quantityOnHand(),
+						beerDTO.price(),
+						foundBeer.createdDate(),
+						foundBeer.lastModifiedDate()
+					)
+				);
+			}).map(beerMapper::beerToBeerDTO);
+
+		// The flatMap operator is then used to process the emitted beer entity.
+		/*
+		 * Inside the flatMap block, a new Beer instance is created to reflect the updated values.
+		 * Since both the Beer entity and BeerDTO are implemented as immutable records,
+		 * the existing beer cannot be modified directly. Instead, a new Beer object is constructed
+		 * using the values from the BeerDTO and the existing beer.
+		 * */
+
+		/*
+		 * The newly created Beer instance is then saved to the database using beerRepository.save(updatedBeer),
+		 * which returns a Mono<Beer> containing the saved entity.
+		 * Finally, the saved Beer entity is mapped back to a BeerDTO using the beerMapper.beerToBeerDTO method.
+		 * This mapping is performed using the map operator, which transforms the emitted Beer into a BeerDTO
+		 * before returning it to the caller.
+		 * */
+	}
+
+
 }
