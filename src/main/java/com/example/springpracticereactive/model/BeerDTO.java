@@ -1,12 +1,22 @@
 package com.example.springpracticereactive.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public record BeerDTO(
 	Integer id,
+	
+	@NotBlank
+	@Size(min = 3, max = 255)
 	String beerName,
+	
+	@Size(min = 1, max = 255)
 	String beerStyle,
+	
+	@Size(max = 25)
 	String upc,
 	String quantityOnHand,
 	BigDecimal price,

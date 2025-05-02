@@ -1,0 +1,42 @@
+###
+GET http://localhost:8080/api/v2/beer
+
+
+###
+GET http://localhost:8080/api/v2/beer/2
+
+
+###
+POST http://localhost:8080/api/v2/beer
+Content-Type: application/json
+
+{
+  "beerName": "New Beer",
+  "beerStyle": "IPA",
+  "upc": "65451",
+  "quantityOnHand": "321",
+  "price": 78.87
+}
+
+###
+PUT http://localhost:8080/api/v2/beer/2
+Content-Type: application/json
+
+{
+  "beerName": "Cranky Pants Updated",
+  "beerStyle": "Pale Ale with a Twist",
+  "upc": "129612313",
+  "quantityOnHand": "984",
+  "price": 1265
+}
+
+###
+PATCH http://localhost:8080/api/v2/beer/2
+Content-Type: application/json
+
+{
+  "beerName": "Cranky Pants Updated Again"
+}
+
+###
+DELETE http://localhost:8080/api/v2/beer/2
