@@ -1,7 +1,9 @@
 package com.example.springpracticereactive.bootstrap;
 
 import com.example.springpracticereactive.domain.Beer;
+import com.example.springpracticereactive.domain.Customer;
 import com.example.springpracticereactive.repositories.BeerRepository;
+import com.example.springpracticereactive.repositories.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -11,20 +13,28 @@ import java.math.BigDecimal;
 public class BootstrapData implements CommandLineRunner {
 
 	private final BeerRepository beerRepository;
-
-	public BootstrapData(BeerRepository beerRepository) {
+	private final CustomerRepository customerRepository;
+	
+	public BootstrapData(BeerRepository beerRepository, CustomerRepository customerRepository) {
 		this.beerRepository = beerRepository;
+		this.customerRepository = customerRepository;
 	}
 
 
 	@Override
 	public void run(String... args) throws Exception {
 		loadBeerData();
+		loadCustomerData();
 
 		beerRepository.count().subscribe(count -> System.out.println("Beer Count: " + count));
 		beerRepository.findAll().subscribe(beer -> System.out.println("Beer: " + beer));
+		
+		System.out.println();
+		
+		customerRepository.count().subscribe(count -> System.out.println("Customer Count: " + count));
+		customerRepository.findAll().subscribe(customer -> System.out.println("Customer: " + customer));
 	}
-
+	
 	private void loadBeerData() {
 		beerRepository.count().subscribe(count -> {
 			if (count == 0) {
@@ -55,6 +65,16 @@ public class BootstrapData implements CommandLineRunner {
 				beerRepository.save(beer1).subscribe();
 				beerRepository.save(beer2).subscribe();
 				beerRepository.save(beer3).subscribe();
+			}
+		});
+	}
+	
+	private void loadCustomerData() {
+		customerRepository.count().subscribe(count -> {
+			if (count == 0) {
+				customerRepository.save(new Customer("John Doe")).subscribe();
+				customerRepository.save(new Customer("Jane Smith")).subscribe();
+				customerRepository.save(new Customer("Bob Johnson")).subscribe();
 			}
 		});
 	}
