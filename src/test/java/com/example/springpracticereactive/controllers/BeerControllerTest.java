@@ -62,4 +62,12 @@ class BeerControllerTest {
 			.expectStatus().isNoContent();
 	}
 	
+	@Test
+	void test_delete_beer() {
+		webTestClient.delete()
+			.uri(BeerController.BEER_PATH_ID, 1)
+			.exchange()
+			.expectStatus().isNoContent();
+	}
+	
 }
