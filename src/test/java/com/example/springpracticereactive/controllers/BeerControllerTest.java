@@ -2,7 +2,10 @@ package com.example.springpracticereactive.controllers;
 
 import com.example.springpracticereactive.model.BeerDTO;
 import com.example.springpracticereactive.repositories.BeerRepositoryTest;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,11 +14,13 @@ import reactor.core.publisher.Mono;
 
 @SpringBootTest
 @AutoConfigureWebTestClient
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class BeerControllerTest {
 	
 	@Autowired
 	WebTestClient webTestClient;
 	
+	@Order(1)
 	@Test
 	void test_list_beers() {
 		webTestClient.get()
@@ -32,6 +37,7 @@ class BeerControllerTest {
 		 * */
 	}
 	
+	@Order(2)
 	@Test
 	void test_get_beer_by_id() {
 		webTestClient.get()
@@ -42,6 +48,7 @@ class BeerControllerTest {
 			.expectBody(BeerDTO.class);
 	}
 	
+	@Order(3)
 	@Test
 	void test_create_new_beer() {
 		webTestClient.post()
@@ -53,6 +60,7 @@ class BeerControllerTest {
 			.expectHeader().location("http://localhost:8080/api/v2/beer/4");
 	}
 	
+	@Order(4)
 	@Test
 	void test_update_beer() {
 		webTestClient.put()
@@ -62,6 +70,7 @@ class BeerControllerTest {
 			.expectStatus().isNoContent();
 	}
 	
+	@Order(5)
 	@Test
 	void test_delete_beer() {
 		webTestClient.delete()
