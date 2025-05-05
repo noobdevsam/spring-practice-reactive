@@ -1,5 +1,6 @@
 package com.example.springpracticereactive.controllers;
 
+import com.example.springpracticereactive.model.CustomerDTO;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
@@ -28,8 +29,15 @@ class CustomerControllerTest {
 			.expectBody().jsonPath("$.size()").isEqualTo(3);
 	}
 	
+	@Order(2)
 	@Test
 	void getCustomerById() {
+		webTestClient.get()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 1)
+			.exchange()
+			.expectStatus().isOk()
+			.expectHeader().valueEquals("content-type", "application/json")
+			.expectBody(CustomerDTO.class);
 	}
 	
 	@Test
