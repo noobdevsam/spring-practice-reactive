@@ -2,9 +2,11 @@ package com.example.springpracticereactive.controllers;
 
 import com.example.springpracticereactive.model.BeerDTO;
 import com.example.springpracticereactive.services.BeerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,7 +29,8 @@ public class BeerController {
 
 	@GetMapping(BEER_PATH_ID)
 	Mono<BeerDTO> getBeerById(@PathVariable Integer id) {
-		return beerService.getBeerById(id);
+		return beerService.getBeerById(id)
+			       .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)));
 	}
 
 	@PostMapping(BEER_PATH)
