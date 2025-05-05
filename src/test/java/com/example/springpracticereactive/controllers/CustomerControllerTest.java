@@ -55,8 +55,13 @@ class CustomerControllerTest {
 			.expectStatus().isNoContent();
 	}
 	
+	@Order(5)
 	@Test
 	void deleteCustomerById() {
+		webTestClient.delete()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 1)
+			.exchange()
+			.expectStatus().isNoContent();
 	}
 	
 	@Order(3)
