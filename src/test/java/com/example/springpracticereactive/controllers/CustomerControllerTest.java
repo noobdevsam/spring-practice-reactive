@@ -45,8 +45,14 @@ class CustomerControllerTest {
 		return new CustomerDTO("Test Customer");
 	}
 	
+	@Order(4)
 	@Test
 	void updateCustomer() {
+		webTestClient.put()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 1)
+			.body(Mono.just(getCustomerDTO()), CustomerDTO.class)
+			.exchange()
+			.expectStatus().isNoContent();
 	}
 	
 	@Test
