@@ -85,6 +85,18 @@ class BeerControllerTest {
 	
 	@Order(6)
 	@Test
+	void test_update_beer_with_bad_data() {
+		var testBeer = new BeerDTO("");
+		
+		webTestClient.put()
+			.uri(BeerController.BEER_PATH_ID, 1)
+			.body(Mono.just(testBeer), BeerDTO.class)
+			.exchange()
+			.expectStatus().isBadRequest();
+	}
+	
+	@Order(7)
+	@Test
 	void test_delete_beer() {
 		webTestClient.delete()
 			.uri(BeerController.BEER_PATH_ID, 1)
