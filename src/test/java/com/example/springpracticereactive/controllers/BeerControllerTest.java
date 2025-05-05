@@ -123,4 +123,14 @@ class BeerControllerTest {
 			.expectStatus().isNotFound();
 	}
 	
+	@Order(10)
+	@Test
+	void test_patch_not_found() {
+		webTestClient.patch()
+			.uri(BeerController.BEER_PATH_ID, 99)
+			.body(Mono.just(BeerRepositoryTest.getNewBeer()), BeerDTO.class)
+			.exchange()
+			.expectStatus().isNotFound();
+	}
+	
 }

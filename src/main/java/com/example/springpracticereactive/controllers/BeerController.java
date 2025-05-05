@@ -52,6 +52,7 @@ public class BeerController {
 	@PatchMapping(BEER_PATH_ID)
 	Mono<ResponseEntity<Void>> patchBeer(@PathVariable Integer id, @Validated @RequestBody BeerDTO beerDTO) {
 		return beerService.patchBeer(id, beerDTO)
+			       .switchIfEmpty(Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND)))
 			       .map(_ -> ResponseEntity.ok().build());
 	}
 	
