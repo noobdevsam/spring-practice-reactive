@@ -8,4 +8,9 @@ public record CustomerDTO(
 	LocalDateTime createdDate,
 	LocalDateTime lastModifiedDate
 ) {
+	public CustomerDTO(
+		String customerName
+	) {
+		this(null, customerName, null, null);
+	}
 }
