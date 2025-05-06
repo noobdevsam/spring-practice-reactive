@@ -29,7 +29,10 @@ public class CustomerController {
 	
 	@GetMapping(CUSTOMER_PATH_ID)
 	Mono<CustomerDTO> getCustomerById(@PathVariable Integer id) {
-		return customerService.getCustomerById(id);
+		return customerService.getCustomerById(id)
+			       .switchIfEmpty(
+				       Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND))
+			       );
 	}
 	
 	@PostMapping(CUSTOMER_PATH)
