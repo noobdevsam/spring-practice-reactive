@@ -75,4 +75,13 @@ class CustomerControllerTest {
 			.expectStatus().isCreated()
 			.expectHeader().location("http://localhost:8080/api/v2/customer/4");
 	}
+	
+	@Order(6)
+	@Test
+	void test_get_by_id_not_found() {
+		webTestClient.get()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 100)
+			.exchange()
+			.expectStatus().isNotFound();
+	}
 }
