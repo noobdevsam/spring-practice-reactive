@@ -58,9 +58,13 @@ public class BeerController {
 	
 	@DeleteMapping(BEER_PATH_ID)
 	Mono<ResponseEntity<Void>> deleteBeerById(@PathVariable Integer id) {
-		return beerService.deleteBeerById(id)
-			       .thenReturn(
-				       ResponseEntity.noContent().build()
+		return beerService.getBeerById(id)
+			       .switchIfEmpty(
+				       Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND))
+			       ).map(
+				beerDTO -> beerService.deleteBeerById(beerDTO.id())
+			).thenReturn(
+				ResponseEntity.noContent().build()
 			       );
 	}
 

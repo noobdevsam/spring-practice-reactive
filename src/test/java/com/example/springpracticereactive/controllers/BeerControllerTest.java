@@ -133,4 +133,13 @@ class BeerControllerTest {
 			.expectStatus().isNotFound();
 	}
 	
+	@Order(11)
+	@Test
+	void test_delete_not_found() {
+		webTestClient.delete()
+			.uri(BeerController.BEER_PATH_ID, 99)
+			.exchange()
+			.expectStatus().isNotFound();
+	}
+	
 }
