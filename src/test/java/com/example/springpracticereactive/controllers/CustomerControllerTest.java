@@ -105,4 +105,14 @@ class CustomerControllerTest {
 			.expectStatus().isBadRequest();
 	}
 	
+	@Order(9)
+	@Test
+	void test_patch_id_not_found() {
+		webTestClient.patch()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 100)
+			.body(Mono.just(getCustomerDTO()), CustomerDTO.class)
+			.exchange()
+			.expectStatus().isNotFound();
+	}
+	
 }
