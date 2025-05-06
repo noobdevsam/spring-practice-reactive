@@ -2,9 +2,11 @@ package com.example.springpracticereactive.controllers;
 
 import com.example.springpracticereactive.model.CustomerDTO;
 import com.example.springpracticereactive.services.CustomerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -53,7 +55,13 @@ public class CustomerController {
 	
 	@DeleteMapping(CUSTOMER_PATH_ID)
 	Mono<ResponseEntity<Void>> deleteCustomerById(@PathVariable Integer id) {
-		return customerService.deleteCustomerById(id)
+		return customerService.getCustomerById(id)
+			       .switchIfEmpty(
+				       Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND))
+			       )
+			       .flatMap(
+				       customerDTO -> customerService.deleteCustomerById(customerDTO.id())
+			       )
 			       .thenReturn(
 				       ResponseEntity.noContent().build()
 			       );
