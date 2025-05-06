@@ -61,7 +61,7 @@ public class BeerController {
 		return beerService.getBeerById(id)
 			       .switchIfEmpty(
 				       Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND))
-			       ).map(
+			       ).flatMap(
 				beerDTO -> beerService.deleteBeerById(beerDTO.id())
 			).thenReturn(
 				ResponseEntity.noContent().build()
