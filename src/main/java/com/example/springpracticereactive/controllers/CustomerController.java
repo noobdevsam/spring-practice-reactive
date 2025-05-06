@@ -44,6 +44,9 @@ public class CustomerController {
 	@PutMapping(CUSTOMER_PATH_ID)
 	Mono<ResponseEntity<Void>> updateCustomer(@PathVariable Integer id, @Validated @RequestBody CustomerDTO customerDTO) {
 		return customerService.updateCustomer(id, customerDTO)
+			       .switchIfEmpty(
+				       Mono.error(new ResponseStatusException(HttpStatus.NOT_FOUND))
+			       )
 			       .map(_ -> ResponseEntity.noContent().build());
 	}
 	
