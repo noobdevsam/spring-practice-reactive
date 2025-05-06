@@ -75,4 +75,53 @@ class CustomerControllerTest {
 			.expectStatus().isCreated()
 			.expectHeader().location("http://localhost:8080/api/v2/customer/4");
 	}
+	
+	@Order(6)
+	@Test
+	void test_get_by_id_not_found() {
+		webTestClient.get()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 100)
+			.exchange()
+			.expectStatus().isNotFound();
+	}
+	
+	@Order(7)
+	@Test
+	void test_update_not_found() {
+		webTestClient.put()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 100)
+			.body(Mono.just(getCustomerDTO()), CustomerDTO.class)
+			.exchange()
+			.expectStatus().isNotFound();
+	}
+	
+	@Order(8)
+	@Test
+	void test_update_bad_data() {
+		webTestClient.put()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 1)
+			.body(Mono.just(new CustomerDTO("")), CustomerDTO.class)
+			.exchange()
+			.expectStatus().isBadRequest();
+	}
+	
+	@Order(9)
+	@Test
+	void test_patch_id_not_found() {
+		webTestClient.patch()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 100)
+			.body(Mono.just(getCustomerDTO()), CustomerDTO.class)
+			.exchange()
+			.expectStatus().isNotFound();
+	}
+	
+	@Order(10)
+	@Test
+	void test_delete_not_found() {
+		webTestClient.delete()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 100)
+			.exchange()
+			.expectStatus().isNotFound();
+	}
+	
 }
