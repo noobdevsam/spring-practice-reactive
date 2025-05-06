@@ -94,4 +94,15 @@ class CustomerControllerTest {
 			.exchange()
 			.expectStatus().isNotFound();
 	}
+	
+	@Order(8)
+	@Test
+	void test_update_bad_data() {
+		webTestClient.put()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 1)
+			.body(Mono.just(new CustomerDTO("")), CustomerDTO.class)
+			.exchange()
+			.expectStatus().isBadRequest();
+	}
+	
 }
