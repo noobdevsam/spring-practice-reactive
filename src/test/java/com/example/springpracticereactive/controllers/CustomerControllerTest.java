@@ -115,4 +115,13 @@ class CustomerControllerTest {
 			.expectStatus().isNotFound();
 	}
 	
+	@Order(10)
+	@Test
+	void test_delete_not_found() {
+		webTestClient.delete()
+			.uri(CustomerController.CUSTOMER_PATH_ID, 100)
+			.exchange()
+			.expectStatus().isNotFound();
+	}
+	
 }
