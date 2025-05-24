@@ -20,6 +20,7 @@ public class SecurityConfig {
 			       .oauth2ResourceServer(
 				       oAuth2ResourceServerSpec -> oAuth2ResourceServerSpec.jwt(Customizer.withDefaults())
 			       )
+			       .csrf(ServerHttpSecurity.CsrfSpec::disable)
 			       .build();
 	}
 }
