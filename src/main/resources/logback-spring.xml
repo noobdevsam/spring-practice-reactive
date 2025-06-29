@@ -1,11 +1,40 @@
+<!--
+        Logback configuration file for Spring Boot application.
+        This file defines the logging behavior and format for the application.
+    -->
+
 <configuration>
+    <!--
+        Appender for logging messages in JSON format to the console.
+        Uses LogstashEncoder to encode log messages in JSON format.
+
+        Attributes:
+        - name: Name of the appender (jsonConsoleAppender).
+        - class: Fully qualified class name of the ConsoleAppender.
+    -->
     <appender
             name="jsonConsoleAppender"
             class="ch.qos.logback.core.ConsoleAppender">
+        <!--
+            Encoder configuration for the appender.
+            Specifies the use of LogstashEncoder for JSON encoding.
+
+            Attributes:
+            - class: Fully qualified class name of the LogstashEncoder.
+        -->
         <encoder
                 class="net.logstash.logback.encoder.LogstashEncoder"
         />
     </appender>
+
+    <!--
+        Root logger configuration.
+        Sets the logging level and associates the JSON console appender.
+
+        Attributes:
+        - level: Logging level (INFO).
+        - appender-ref: Reference to the jsonConsoleAppender.
+    -->
     <root level="INFO">
         <appender-ref ref="jsonConsoleAppender"/>
     </root>
